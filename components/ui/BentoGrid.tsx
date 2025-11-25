@@ -5,7 +5,7 @@ import { IoCopyOutline } from "react-icons/io5";
 
 import dynamic from "next/dynamic";  
 const LottiePlayerNoSSR = dynamic(
-  () => import("../ui/LottiePlayer"),
+  () => import("./LottiePlayer"),
   { ssr: false }
 );
 
