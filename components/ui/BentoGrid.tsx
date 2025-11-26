@@ -2,46 +2,17 @@
 
 import { useState } from "react";
 import { IoCopyOutline } from "react-icons/io5";
-import dynamic from "next/dynamic";
 import { cn } from "@/lib/utils";
 import { BackgroundGradientAnimation } from "./GradientBg";
-import GridGlobe from "../Grid"; // Grid.tsx components ke andar directly
+import GridGlobe from "../Grid";
 import MagicButton from "../MagicButton";
 
-const LottiePlayerNoSSR = dynamic(
-  () => import("./LottiePlayer"), // Correct relative path
-  { ssr: false }
-);
-
-export const BentoGrid = ({
-  className,
-  children,
-}: {
+interface BentoGridProps {
   className?: string;
   children?: React.ReactNode;
-}) => {
-  return (
-    <div
-      className={cn(
-        "grid grid-cols-1 md:grid-cols-6 lg:grid-cols-5 md:grid-row-7 gap-4 lg:gap-8 mx-auto",
-        className
-      )}
-    >
-      {children}
-    </div>
-  );
-};
+}
 
-export const BentoGridItem = ({
-  className,
-  id,
-  title,
-  description,
-  img,
-  imgClassName,
-  titleClassName,
-  spareImg,
-}: {
+interface BentoGridItemProps {
   className?: string;
   id: number;
   title?: string | React.ReactNode;
@@ -50,9 +21,31 @@ export const BentoGridItem = ({
   imgClassName?: string;
   titleClassName?: string;
   spareImg?: string;
+}
+
+export const BentoGrid: React.FC<BentoGridProps> = ({ className, children }) => {
+  return (
+    <div
+      className={cn(
+        "grid grid-cols-1 md:grid-cols-6 lg:grid-cols-5 md:grid-rows-7 gap-4 lg:gap-8 mx-auto",
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
+};
+
+export const BentoGridItem: React.FC<BentoGridItemProps> = ({
+  className,
+  id,
+  title,
+  description,
+  img,
+  imgClassName,
+  titleClassName,
+  spareImg,
 }) => {
-  const leftLists = ["ReactJS", "Express", "Typescript"];
-  const rightLists = ["VueJS", "NuxtJS", "GraphQL"];
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -67,59 +60,56 @@ export const BentoGridItem = ({
         className
       )}
       style={{
-        backgroundColor:
+        background:
           "linear-gradient(90deg, rgba(4,7,29,1) 0%, rgba(12,14,35,1) 100%)",
       }}
     >
-      <div className={`${id === 6 && "flex justify-center"} h-full`}>
-        <div className="w-full h-full absolute">
-          {img && (
-            <img
-              src={img}
-              alt={img}
-              className={cn(imgClassName, "object-cover object-center")}
-            />
-          )}
-        </div>
+      <div className={`${id === 6 ? "flex justify-center" : ""} h-full`}>
+        {/* Main image */}
+        {img && (
+          <div className="w-full h-full absolute">
+            <img src={img} alt={img} className={cn(imgClassName, "object-cover object-center")} />
+          </div>
+        )}
 
-        <div className={`absolute right-0 -bottom-5 ${id === 5 && "w-full opacity-80"}`}>
-          {spareImg && (
-            <img
-              src={spareImg}
-              alt={spareImg}
-              className="object-cover object-center w-full h-full"
-            />
-          )}
-        </div>
+        {/* Spare image */}
+        {spareImg && (
+          <div className={`absolute right-0 -bottom-5 ${id === 5 ? "w-full opacity-80" : ""}`}>
+            <img src={spareImg} alt={spareImg} className="object-cover object-center w-full h-full" />
+          </div>
+        )}
 
+        {/* Background Gradient Animation for ID 6 */}
         {id === 6 && (
           <BackgroundGradientAnimation>
-            <div className="absolute z-50 inset-0 flex items-center justify-center text-white font-bold px-4 pointer-events-none text-3xl text-center md:text-4xl lg:text-7xl"></div>
+            <div className="absolute z-50 inset-0 flex items-center justify-center text-white font-bold px-4 pointer-events-none text-3xl text-center md:text-4xl lg:text-7xl" />
           </BackgroundGradientAnimation>
         )}
 
+        {/* Content */}
         <div
           className={cn(
             titleClassName,
             "group-hover/bento:translate-x-2 transition duration-200 relative md:h-full min-h-40 flex flex-col px-5 p-5 lg:p-10"
           )}
         >
-          <div className="font-sans font-extralight md:max-w-32 md:text-xs lg:text-base text-sm text-[#C1C2D3] z-10">
-            {description}
-          </div>
+          {description && (
+            <div className="font-sans font-extralight md:max-w-32 md:text-xs lg:text-base text-sm text-[#C1C2D3] z-10">
+              {description}
+            </div>
+          )}
 
-          <div className={`font-sans text-lg lg:text-3xl max-w-96 font-bold z-10`}>
-            {title}
-          </div>
+          {title && (
+            <div className="font-sans text-lg lg:text-3xl max-w-96 font-bold z-10">
+              {title}
+            </div>
+          )}
 
           {id === 2 && <GridGlobe />}
 
+          {/* Email Copy Button */}
           {id === 6 && (
             <div className="mt-5 relative">
-              <div className="absolute -bottom-5 right-0">
-                <LottiePlayerNoSSR width={400} height={200} />
-              </div>
-
               <MagicButton
                 title={copied ? "Email is Copied!" : "Copy my email address"}
                 icon={<IoCopyOutline />}
