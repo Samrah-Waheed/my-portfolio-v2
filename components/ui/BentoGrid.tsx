@@ -4,7 +4,6 @@ import { useState } from "react";
 import { IoCopyOutline } from "react-icons/io5";
 import { cn } from "@/lib/utils";
 import { BackgroundGradientAnimation } from "./GradientBg";
-import GridGlobe from "../Grid";
 import MagicButton from "../MagicButton";
 
 interface BentoGridProps {
@@ -65,21 +64,30 @@ export const BentoGridItem: React.FC<BentoGridItemProps> = ({
       }}
     >
       <div className={`${id === 6 ? "flex justify-center" : ""} h-full`}>
-        {/* Main image */}
+        
+        {/* Main Image */}
         {img && (
           <div className="w-full h-full absolute">
-            <img src={img} alt={img} className={cn(imgClassName, "object-cover object-center")} />
+            <img
+              src={img}
+              alt={img}
+              className={cn(imgClassName, "object-cover object-center")}
+            />
           </div>
         )}
 
-        {/* Spare image */}
+        {/* Spare Image */}
         {spareImg && (
           <div className={`absolute right-0 -bottom-5 ${id === 5 ? "w-full opacity-80" : ""}`}>
-            <img src={spareImg} alt={spareImg} className="object-cover object-center w-full h-full" />
+            <img
+              src={spareImg}
+              alt={spareImg}
+              className="object-cover object-center w-full h-full"
+            />
           </div>
         )}
 
-        {/* Background Gradient Animation for ID 6 */}
+        {/* Background Gradient Animation */}
         {id === 6 && (
           <BackgroundGradientAnimation>
             <div className="absolute z-50 inset-0 flex items-center justify-center text-white font-bold px-4 pointer-events-none text-3xl text-center md:text-4xl lg:text-7xl" />
@@ -105,7 +113,13 @@ export const BentoGridItem: React.FC<BentoGridItemProps> = ({
             </div>
           )}
 
-          {id === 2 && <GridGlobe />}
+          {/* Old GridGlobe removed (NO MORE CIRCULAR IMPORT) */}
+          {id === 2 && (
+            <div className="text-white text-sm opacity-80">
+              {/* Globe placeholder (No error) */}
+              Globe Animation Removed for Build Fix
+            </div>
+          )}
 
           {/* Email Copy Button */}
           {id === 6 && (
